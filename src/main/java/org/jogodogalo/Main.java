@@ -1,5 +1,6 @@
 package org.jogodogalo;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 /**
@@ -20,6 +21,7 @@ import java.util.*;
 public class Main {
 
     public static int roundcount = 0;
+    public static int ishard = 0;
     public static String[] game = new String[9];
     final static Scanner scanner = new Scanner(System.in); // defines the scanner so the program can read user inputs
 
@@ -44,18 +46,46 @@ public class Main {
             case 0:
                 System.exit(1);
                 break;
+            case 2:
+                  ishard=1;
+                break;
             default:
                 System.out.println("Valor invalido");
                 menu();
                 break;
         }
     }
+    public static boolean hardmode(int player){
+        boolean a=false;
+        boolean control=true;
+        Random rand = new Random();
+        int b= rand.nextInt(2);
+        while (control) {
+            System.out.println("Escolha 0 ou 1");
+            int user_guess = scanner.nextInt();
+            if ((user_guess!=0)&&(user_guess!=1)) {
+                System.out.println("Input invalido");
+            }
+            else{
+                if (b != user_guess) {
+                    System.out.println("Perdeste a tua vez de jogar jogador " + player);
+                }
+                else{
+                    System.out.println("Acertaste");
+                }
+                control=false;
+            }
+        }
 
+        return a;
+    }
     public static void load_round() {
         roundcount++;
         draw();
-        System.out.println("Jogador 1 escolha uma posição:");
-        register_move(scanner.nextInt(), 1);
+        if(hardmode(1)) {
+            System.out.println("Jogador 1 escolha uma posição:");
+            register_move(scanner.nextInt(), 1);
+        }
         draw();
         System.out.println("Jogador 2 escolha uma posição:");
         register_move(scanner.nextInt(), 2);
@@ -145,6 +175,7 @@ public class Main {
 
     public static void clear_game() {
         roundcount = 0;
+        ishard = 0;
         for (int a = 0; a < game.length; a++) {
             game[a] = Integer.toString(a + 1);
         }
