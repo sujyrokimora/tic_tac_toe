@@ -62,24 +62,30 @@ public class Main {
     }
 
     public static void register_move(int move, int player) {
-        if ((game[move - 1] == "❌") || ((game[move - 1] == "🅾"))) {
-            System.out.println("Esta posição ja se encontra ocupada");
+        if (move <= 9) {
+            if ((game[move - 1] == "❌") || ((game[move - 1] == "🅾"))) {
+                System.out.println("Esta posição ja se encontra ocupada");
+                System.out.println("Jogador " + player + " escolha uma posição:");
+                register_move(scanner.nextInt(), player);
+            } else {
+                switch (player) {
+                    case 1:
+                        game[move - 1] = "❌";
+                        break;
+                    case 2:
+                        game[move - 1] = "🅾";
+                        break;
+                    default:
+                        System.out.println("Jogador invalido");
+                        load_round();
+                        break;
+                }
+                check_win();
+            }
+        } else {
+            System.out.println("Posição invalida");
             System.out.println("Jogador " + player + " escolha uma posição:");
             register_move(scanner.nextInt(), player);
-        } else {
-            switch (player) {
-                case 1:
-                    game[move - 1] = "❌";
-                    break;
-                case 2:
-                    game[move - 1] = "🅾";
-                    break;
-                default:
-                    System.out.println("Jogador invalido");
-                    load_round();
-                    break;
-            }
-            check_win();
         }
     }
 
