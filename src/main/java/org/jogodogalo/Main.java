@@ -27,13 +27,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        for (int a = 0; a < game.length; a++) {
-            game[a] = Integer.toString(a + 1);
-        }
         menu();
     }
 
     public static void menu() {
+        clear_game();
         System.out.println("1 - NOVO JOGO");
         System.out.println("0 - SAIR");
         int option = scanner.nextInt();
@@ -80,7 +78,7 @@ public class Main {
                         load_round();
                         break;
                 }
-                check_win();
+                check_win(player);
             }
         } else {
             System.out.println("Posição invalida");
@@ -89,8 +87,36 @@ public class Main {
         }
     }
 
-    public static void check_win() {
+    public static void check_win(int player) {
+        for (int a = 0; a <= game.length; a++) {
+            if (a + 2 <= 8) {
+                if ((game[a] == game[a + 1]) && (game[a] == game[a + 2]) && ((a % 3 == 0) || (a % 2 == 0))) {
+                    announce_winner(player);
+                }
+            }
 
+        }
+        for (int a = 0; a <= 3; a++) {
+
+            if (a + 6 <= 8) {
+                if ((game[a] == game[a + 3]) && (game[a] == game[a + 6])) {
+                    announce_winner(player);
+                }
+            }
+        }
+        if ((game[0] == game[4]) && (game[0] == game[8])) {
+            announce_winner(player);
+        }
+        if ((game[2] == game[4]) && (game[2] == game[6])) {
+            announce_winner(player);
+        }
+
+    }
+
+    public static void announce_winner(int player) {
+        draw();
+        System.out.println("O jogador " + player + " ganhou o jogo!!🎉🎉🎉🎉");
+        menu();
     }
 
     public static void draw() {
@@ -106,6 +132,12 @@ public class Main {
                 System.out.println("-----------------------------------------");
             }
             count += 3;
+        }
+    }
+
+    public static void clear_game() {
+        for (int a = 0; a < game.length; a++) {
+            game[a] = Integer.toString(a + 1);
         }
     }
 }
