@@ -1,7 +1,6 @@
 package org.jogodogalo;
 
 import java.util.*;
-import java.util.ArrayList;
 
 /**
  * Este template foi criado na
@@ -11,7 +10,7 @@ import java.util.ArrayList;
  * -----------------------------------------------------
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
- * @author Rodrigo, Xavier Cruz
+ * @author Rodrigo Inácio, Xavier Cruz
  * @version 0.1
  * <p>
  * O programa deve ser escrito em inglês.
@@ -20,16 +19,16 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static String[] game= new String[9];
-
+    public static String[] game = new String[9];
     final static Scanner scanner = new Scanner(System.in); // defines the scanner so the program can read user inputs
+
     static {
         scanner.useLocale(Locale.ROOT);
     }
 
     public static void main(String[] args) {
-        for(int a=0;a<game.length;a++) {
-            game[a]= Integer.toString(a+1);
+        for (int a = 0; a < game.length; a++) {
+            game[a] = Integer.toString(a + 1);
         }
         menu();
     }
@@ -40,7 +39,7 @@ public class Main {
         int option = scanner.nextInt();
         switch (option) {
             case 1:
-                start_game();
+                load_round();
                 break;
             case 0:
                 System.exit(1);
@@ -50,27 +49,57 @@ public class Main {
                 menu();
                 break;
         }
-
     }
 
-    public static void start_game() {
+    public static void load_round() {
         draw();
+        System.out.println("Jogador 1 escolha uma posição:");
+        register_move(scanner.nextInt(), 1);
+        draw();
+        System.out.println("Jogador 2 escolha uma posição:");
+        register_move(scanner.nextInt(), 2);
+        load_round();
     }
 
-    public static void draw(){
-        int count=0;
-        for(int control=0;control!=3;control++)
-        {
+    public static void register_move(int move, int player) {
+        if ((game[move - 1] == "❌") || ((game[move - 1] == "🅾"))) {
+            System.out.println("Esta posição ja se encontra ocupada");
+            System.out.println("Jogador " + player + " escolha uma posição:");
+            register_move(scanner.nextInt(), player);
+        } else {
+            switch (player) {
+                case 1:
+                    game[move - 1] = "❌";
+                    break;
+                case 2:
+                    game[move - 1] = "🅾";
+                    break;
+                default:
+                    System.out.println("Jogador invalido");
+                    load_round();
+                    break;
+            }
+            check_win();
+        }
+    }
 
+    public static void check_win() {
+
+    }
+
+    public static void draw() {
+        int count = 0;
+        for (int control = 0; control != 3; control++) {
             System.out.print("             |");
             System.out.println("             |");
             System.out.print("      " + game[count] + "      |");
-            System.out.println("      " + game[count+1] + "      |      "+game[count+2]);
+            System.out.println("      " + game[count + 1] + "      |      " + game[count + 2]);
             System.out.print("             |");
             System.out.println("             |");
-            if(control!=2) {System.out.println("-----------------------------------------");}
-            count+= 3;
-
+            if (control != 2) {
+                System.out.println("-----------------------------------------");
+            }
+            count += 3;
         }
     }
 }
