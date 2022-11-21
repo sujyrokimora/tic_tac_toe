@@ -1,6 +1,5 @@
 package org.jogodogalo;
 
-import java.sql.SQLOutput;
 import java.util.*;
 
 /**
@@ -20,18 +19,18 @@ import java.util.*;
 
 public class Main {
 
-    public static int roundcount = 0;
-    public static int ishard = 0;
+    public static int round_count = 0;
+    public static int is_hard = 0;
     public static String[] game = new String[9];
     final static Scanner scanner = new Scanner(System.in); // defines the scanner so the program can read user inputs
 
     static {
-        scanner.useLocale(Locale.ROOT);
+        scanner.useLocale(Locale.ROOT);//sets the language to the system root
     }
 
     public static void main(String[] args) {
         menu();
-    }
+    }//starts the game
 
     public static void menu() {
         clear_game();
@@ -47,8 +46,8 @@ public class Main {
                 System.exit(1);
                 break;
             case 2:
-                  ishard=1;
-                  load_round();
+                is_hard = 1;
+                load_round();
                 break;
             default:
                 System.out.println("Valor invalido");
@@ -56,34 +55,34 @@ public class Main {
                 break;
         }
     }
-    public static boolean hardmode(int player){
-        boolean a=false;
-        boolean control=true;
+
+    public static boolean hardmode(int player) {
+        boolean a = false;
+        boolean control = true;
         Random rand = new Random();
-        int b= rand.nextInt(2);
+        int b = rand.nextInt(2);
         while (control) {
             System.out.println("Escolha 0 ou 1");
             int user_guess = scanner.nextInt();
-            if ((user_guess!=0)&&(user_guess!=1)) {
+            if ((user_guess != 0) && (user_guess != 1)) {
                 System.out.println("Input invalido");
-            }
-            else{
+            } else {
                 if (b != user_guess) {
                     System.out.println("Perdeste a tua vez de jogar jogador " + player);
-                }
-                else{
+                } else {
                     System.out.println("Acertaste");
                 }
-                control=false;
+                control = false;
             }
         }
 
         return a;
     }
+
     public static void load_round() {
-        roundcount++;
+        round_count++;
         draw();
-        if(hardmode(1)) {
+        if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
         }
@@ -122,7 +121,7 @@ public class Main {
     }
 
     public static void check_win(int player) {
-        if (roundcount >= 5) {
+        if (round_count >= 5) {
             announce_winner(3);
         }
         for (int a = 0; a < game.length; a += 3) {//horizontal check
@@ -161,9 +160,9 @@ public class Main {
         }
     }
 
-    public static void announce_winner(int player) {
+    public static void announce_winner(int player) {// function responsible for the end of the game and announces the winner
         draw();
-        if (player != 3) {
+        if (player != 3) {//when player is 3 this means that the game is a draw
             System.out.println("O jogador " + player + " ganhou o jogo!!🎉🎉🎉🎉");
         } else {
             System.out.println("O jogo empatou.🤡💀");
@@ -172,7 +171,7 @@ public class Main {
         menu();
     }
 
-    public static void draw() {
+    public static void draw() {//function that draws the game table from the game[] array
         int count = 0;
         for (int control = 0; control != 3; control++) {
             System.out.print("             |");
@@ -188,9 +187,9 @@ public class Main {
         }
     }
 
-    public static void clear_game() {
-        roundcount = 0;
-        ishard = 0;
+    public static void clear_game() {// this function is responsible for the clearing of the game
+        round_count = 0;
+        is_hard = 0;
         for (int a = 0; a < game.length; a++) {
             game[a] = Integer.toString(a + 1);
         }
