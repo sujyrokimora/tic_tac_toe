@@ -34,6 +34,7 @@ public class Main {
     public static void menu() {
         clear_game();
         System.out.println("1 - NOVO JOGO");
+        System.out.println("2 - HARD MODE");
         System.out.println("0 - SAIR");
         int option = scanner.nextInt();
         switch (option) {
