@@ -19,6 +19,7 @@ import java.util.*;
 
 public class Main {
 
+    public static int roundcount = 0;
     public static String[] game = new String[9];
     final static Scanner scanner = new Scanner(System.in); // defines the scanner so the program can read user inputs
 
@@ -50,6 +51,7 @@ public class Main {
     }
 
     public static void load_round() {
+        roundcount++;
         draw();
         System.out.println("Jogador 1 escolha uma posição:");
         register_move(scanner.nextInt(), 1);
@@ -88,13 +90,14 @@ public class Main {
     }
 
     public static void check_win(int player) {
-        for (int a = 0; a <= game.length; a++) {
-            if (a + 2 <= 8) {
-                if ((game[a] == game[a + 1]) && (game[a] == game[a + 2]) && ((a % 3 == 0) || (a % 2 == 0))) {
-                    announce_winner(player);
-                }
-            }
+        if (roundcount >= 5) {
+            announce_winner(3);
+        }
+        for (int a = 0; a < game.length; a += 3) {//horizontal
 
+            if (((game[a] == game[a + 1]) && (game[a] == game[a + 2]))) {
+                announce_winner(player);
+            }
         }
         for (int a = 0; a <= 3; a++) {
 
@@ -110,12 +113,16 @@ public class Main {
         if ((game[2] == game[4]) && (game[2] == game[6])) {
             announce_winner(player);
         }
-
     }
 
     public static void announce_winner(int player) {
         draw();
-        System.out.println("O jogador " + player + " ganhou o jogo!!🎉🎉🎉🎉");
+        if (player != 3) {
+            System.out.println("O jogador " + player + " ganhou o jogo!!🎉🎉🎉🎉");
+        } else {
+            System.out.println("O jogo empatou.🤡💀");
+        }
+
         menu();
     }
 
@@ -136,6 +143,7 @@ public class Main {
     }
 
     public static void clear_game() {
+        roundcount = 0;
         for (int a = 0; a < game.length; a++) {
             game[a] = Integer.toString(a + 1);
         }
