@@ -48,6 +48,7 @@ public class Main {
                 break;
             case 2:
                   ishard=1;
+                  load_round();
                 break;
             default:
                 System.out.println("Valor invalido");
@@ -124,13 +125,13 @@ public class Main {
         if (roundcount >= 5) {
             announce_winner(3);
         }
-        for (int a = 0; a < game.length; a += 3) {//horizontal
+        for (int a = 0; a < game.length; a += 3) {//horizontal check
 
             if (((game[a] == game[a + 1]) && (game[a] == game[a + 2]))) {
                 announce_winner(player);
             }
         }
-        for (int a = 0; a <= 3; a++) {
+        for (int a = 0; a <= 3; a++) {//vertical check
 
             if (a + 6 <= 8) {
                 if ((game[a] == game[a + 3]) && (game[a] == game[a + 6])) {
@@ -138,9 +139,23 @@ public class Main {
                 }
             }
         }
+        //checks the following positioning
+        /*
+        1-0-0
+        0-1-0
+        0-0-1
+        1 is equivalent to the moves made by the same player in that order
+        */
         if ((game[0] == game[4]) && (game[0] == game[8])) {
             announce_winner(player);
         }
+        //checks the following positioning
+        /*
+        0-0-1
+        0-1-0
+        1-0-0
+        1 is equivalent to the moves made by the same player in that order
+        */
         if ((game[2] == game[4]) && (game[2] == game[6])) {
             announce_winner(player);
         }
