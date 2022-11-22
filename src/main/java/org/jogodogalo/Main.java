@@ -11,7 +11,7 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio, Xavier Cruz
- * @version 1.5.1
+ * @version 1.6
  * <p>
  * O programa deve ser escrito em inglês.
  */
@@ -63,7 +63,7 @@ public class Main {
             Random rand = new Random();
             int b = rand.nextInt(2);
             while (control) {
-                System.out.println("Escolha 0 ou 1");
+                System.out.println("Jogador "+player+": Escolha 0 ou 1");
                 int user_guess = scanner.nextInt();
                 if ((user_guess != 0) && (user_guess != 1)) {
                     System.out.println("Input invalido");
@@ -72,6 +72,7 @@ public class Main {
                         System.out.println("Perdeste a tua vez de jogar jogador " + player);
                     } else {
                         System.out.println("Acertaste");
+                        a=true;
                     }
                     control = false;
                 }
@@ -84,19 +85,24 @@ public class Main {
     }
 
     public static void load_round() {
-        round_count++;
+        boolean played=false;
         draw();
         if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
             draw();
+            played=true;
         }
 
         if (hardmode(2)) {
             System.out.println("Jogador 2 escolha uma posição:");
             register_move(scanner.nextInt(), 2);
-            load_round();
+            played=true;
         }
+        if(played){
+            round_count++;
+        }
+        load_round();
     }
 
     public static void register_move(int move, int player) {
