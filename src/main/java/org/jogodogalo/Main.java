@@ -11,7 +11,7 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio, Xavier Cruz
- * @version 1.6
+ * @version 1.6.1
  * <p>
  * O programa deve ser escrito em inglês.
  */
@@ -90,8 +90,8 @@ public class Main {
         if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
-            draw();
             played=true;
+            draw();
         }
 
         if (hardmode(2)) {
@@ -101,6 +101,8 @@ public class Main {
         }
         if(played){
             round_count++;
+            System.out.println(round_count);
+            System.out.println("ola");
         }
         load_round();
     }
@@ -134,7 +136,7 @@ public class Main {
     }
 
     public static void check_win(int player) {
-        if (round_count >= 5) {
+        if (round_count >= 4) {
             announce_winner(3);
         }
         for (int a = 0; a < game.length; a += 3) {//horizontal check
