@@ -11,7 +11,7 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio, Xavier Cruz
- * @version 0.1
+ * @version 1.5
  * <p>
  * O programa deve ser escrito em inglês.
  */
@@ -20,7 +20,7 @@ import java.util.*;
 public class Main {
 
     public static int round_count = 0;
-    public static int is_hard = 0;
+    public static boolean is_hard = false;
     public static String[] game = new String[9];
     final static Scanner scanner = new Scanner(System.in); // defines the scanner so the program can read user inputs
 
@@ -46,7 +46,7 @@ public class Main {
                 System.exit(1);
                 break;
             case 2:
-                is_hard = 1;
+                is_hard = true;
                 load_round();
                 break;
             default:
@@ -59,21 +59,25 @@ public class Main {
     public static boolean hardmode(int player) {
         boolean a = false;
         boolean control = true;
-        Random rand = new Random();
-        int b = rand.nextInt(2);
-        while (control) {
-            System.out.println("Escolha 0 ou 1");
-            int user_guess = scanner.nextInt();
-            if ((user_guess != 0) && (user_guess != 1)) {
-                System.out.println("Input invalido");
-            } else {
-                if (b != user_guess) {
-                    System.out.println("Perdeste a tua vez de jogar jogador " + player);
+        if (is_hard) {
+            Random rand = new Random();
+            int b = rand.nextInt(2);
+            while (control) {
+                System.out.println("Escolha 0 ou 1");
+                int user_guess = scanner.nextInt();
+                if ((user_guess != 0) && (user_guess != 1)) {
+                    System.out.println("Input invalido");
                 } else {
-                    System.out.println("Acertaste");
+                    if (b != user_guess) {
+                        System.out.println("Perdeste a tua vez de jogar jogador " + player);
+                    } else {
+                        System.out.println("Acertaste");
+                    }
+                    control = false;
                 }
-                control = false;
             }
+        } else {
+            a = true;
         }
 
         return a;
@@ -85,11 +89,14 @@ public class Main {
         if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
+            draw();
         }
-        draw();
-        System.out.println("Jogador 2 escolha uma posição:");
-        register_move(scanner.nextInt(), 2);
-        load_round();
+
+        if (hardmode(2)) {
+            System.out.println("Jogador 2 escolha uma posição:");
+            register_move(scanner.nextInt(), 2);
+            load_round();
+        }
     }
 
     public static void register_move(int move, int player) {
@@ -189,7 +196,7 @@ public class Main {
 
     public static void clear_game() {// this function is responsible for the clearing of the game
         round_count = 0;
-        is_hard = 0;
+        is_hard = false;
         for (int a = 0; a < game.length; a++) {
             game[a] = Integer.toString(a + 1);
         }
