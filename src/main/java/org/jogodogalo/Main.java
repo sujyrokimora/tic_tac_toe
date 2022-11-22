@@ -60,18 +60,21 @@ public class Main {
                 break;
         }
     }
-    public static boolean is_this_free(int move){
-        boolean answer=true;
-        if(game[move-1]=="❌"||game[move-1]=="🅾"){
-            answer=false;
+
+    public static boolean is_this_free(int move) {
+        boolean answer = true;
+        if (game[move - 1] == "❌" || game[move - 1] == "🅾") {
+            answer = false;
         }
         return answer;
     }
+
     public static void cpu() {
         //sei que o cpu é sempre o segundo a playar por isso não importa ele saber se ja jogaram
 
         cpu_read_game();
     }
+
     public static void check_win(int player) {
         if (round_count >= 4) {
             announce_winner(3);
@@ -111,13 +114,16 @@ public class Main {
             announce_winner(player);
         }
     }
+
     public static void cpu_read_game() {//this function will study the game table and base from that will make a decision
         /* in order for the program to choose to "block"
      the other player will search for a combination 2/3 of a row
      if he doesn't see anything to block the cpu will try to make a move on his advantage*/
 
         int desc = 0;
+        boolean stop = false;
         for (int a = 0; a < game.length; a += 3) {//horizontal check
+            stop = false;
 
             if (((game[a] == game[a + 1]) || (game[a] == game[a + 2]) || (game[a + 1] == game[a + 2]))) {//going to score next move
                 if ((game[a] == game[a + 1])) {
@@ -131,10 +137,16 @@ public class Main {
                 }
                 break;
             } else {
-                for (int  game_check= 0; game_check <= game.length; game_check++) {
-                    if(game[game_check]=="❌"){
 
-                        break;
+                for (int game_check = 0; game_check < game.length; game_check++) {
+                    if ((game[game_check] == "❌") && (!stop)) {
+                        System.out.println(game_check);
+                        System.out.println("------");
+                        if (is_this_free(game_check + 2)) {
+                            stop = true;
+                            register_move(game_check + 2, 2);
+                        }
+
                     }
                 }
             }
