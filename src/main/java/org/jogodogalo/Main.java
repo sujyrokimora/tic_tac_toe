@@ -11,7 +11,7 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio, Xavier Cruz
- * @version 1.6.3
+ * @version 1.7
  * <p>
  * O programa deve ser escrito em inglês.
  */
@@ -74,10 +74,103 @@ public class Main {
         //sei que o cpu é sempre o segundo a playar por isso não importa ele saber se ja jogaram
 
         cpu_read_game();
+
+    }
+
+    public static void cpu_read_game() {//this function will study the game table and base from that will make a decision
+        /* in order for the program to choose to "block"
+     the other player will search for a combination 2/3 of a row
+     if he doesn't see anything to block the cpu will try to make a move on his advantage*/
+        boolean optimal = false;
+        for (int a = 0; a < game.length; a += 3) {//horizontal
+            if ((game[a] == game[a + 1]) && (!optimal)) {
+                if (is_this_free(a + 3)) {
+                    optimal = true;
+                    register_move(a + 3, 2);
+                }
+            } else if ((game[a] == game[a + 2]) && (!optimal)) {
+                if (is_this_free(a + 2)) {
+                    optimal = true;
+                    register_move(a + 2, 2);
+                }
+            } else if ((game[a + 2] == game[a + 1]) && (!optimal)) {
+                if (is_this_free(a + 1)) {
+                    optimal = true;
+                    register_move(a + 1, 2);
+                }
+            }
+        }
+        for (int a = 0; a <= 3; a++) {//vertical check
+
+            if ((a + 6 <= 8) && (!optimal)) {
+                if ((game[a] == game[a + 3])) {
+                    if (is_this_free(a + 7)) {
+                        optimal = true;
+                        register_move(a + 7, 2);
+                    }
+                }
+                if ((game[a] == game[a + 6])) {
+                    if (is_this_free(a + 4)) {
+                        optimal = true;
+                        register_move(a + 4, 2);
+                    }
+                }
+                if ((game[a + 6] == game[a + 3])) {
+                    if (is_this_free(a + 1)) {
+                        optimal = true;
+                        register_move(a + 1, 2);
+                    }
+                }
+            }
+        }
+
+        if ((game[0] == game[4]) && (!optimal)) {
+            optimal = true;
+            register_move(9,2);
+        }
+        if ((game[4] == game[8]) && (!optimal)) {
+            optimal = true;
+            register_move(1,2);
+        }
+        if ((game[8] == game[0]) && (!optimal)) {
+            optimal = true;
+            register_move(5,2);
+        }
+
+
+        if ((game[2] == game[4]) && (!optimal)) {
+            optimal = true;
+            register_move(7,2);
+        }
+        if ((game[4] == game[6]) && (!optimal)) {
+            optimal = true;
+            register_move(3,2);
+        }
+        if ((game[6] == game[2]) && (!optimal)) {
+            optimal = true;
+            register_move(5,2);
+        }
+
+        if (is_this_free(5)) {
+            register_move(5, 2);
+        } else {
+            int tenta = 0;
+            while (!optimal && tenta < 9) {
+                tenta++;
+                Random rand = new Random();
+                int tr = rand.nextInt(1, 9);
+                System.out.println(tr);
+                if (is_this_free(tr)) {
+                    System.out.println(tr);
+                    register_move(tr, 2);
+                    optimal = true;
+                }
+            }
+        }
     }
 
     public static void check_win(int player) {
-        if (round_count+round_count_2 >= 9) {
+        if (round_count + round_count_2 >= 9) {
             announce_winner(3);
         }
         for (int a = 0; a < game.length; a += 3) {//horizontal check
@@ -116,74 +209,6 @@ public class Main {
         }
     }
 
-    public static void cpu_read_game() {//this function will study the game table and base from that will make a decision
-        /* in order for the program to choose to "block"
-     the other player will search for a combination 2/3 of a row
-     if he doesn't see anything to block the cpu will try to make a move on his advantage*/
-
-        int desc = 0;
-        boolean stop = false;
-        for (int a = 0; a < game.length; a += 3) {//horizontal check
-            stop = false;
-
-            if (((game[a] == game[a + 1]) || (game[a] == game[a + 2]) || (game[a + 1] == game[a + 2]))) {//going to score next move
-                if ((game[a] == game[a + 1])) {
-                    register_move(a + 3, 2);
-                }
-                if ((game[a] == game[a + 2])) {
-                    register_move(a + 2, 2);
-                }
-                if ((game[a + 1] == game[a + 2])) {
-                    register_move(a + 1, 2);
-                }
-                break;
-            } else {
-
-                for (int game_check = 0; game_check < game.length; game_check++) {
-                    if ((game[game_check] == "❌") && (!stop)) {
-                        System.out.println(game_check);
-                        System.out.println("------");
-                        if (is_this_free(game_check + 2)) {
-                            stop = true;
-                            register_move(game_check + 2, 2);
-                        }
-
-                    }
-                }
-            }
-        }
-        for (int a = 0; a <= 3; a++) {//vertical check
-
-            if (a + 6 <= 8) {
-                if ((game[a] == game[a + 3]) || (game[a] == game[a + 6]) || (game[a + 3] == game[a + 6])) {//going to score next move
-
-                    break;
-                }
-            }
-        }
-        //checks the following positioning
-        /*
-        1-0-0
-        0-1-0
-        0-0-1
-        1 is equivalent to the moves made by the same player in that order
-        */
-        if ((game[0] == game[4]) || (game[0] == game[8]) || (game[4] == game[8])) {
-
-        }
-        //checks the following positioning
-        /*
-        0-0-1
-        0-1-0
-        1-0-0
-        1 is equivalent to the moves made by the same player in that order
-        */
-        if ((game[2] == game[4]) || (game[2] == game[6])) {
-
-        }
-
-
-    }
 
     public static boolean hardmode(int player) {
         boolean a = false;
@@ -215,19 +240,17 @@ public class Main {
 
     public static void load_round() {
         draw();
+        System.out.println(round_count + round_count_2);
         if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
-            round_count++;
             draw();
         }
 
         if (hardmode(2)) {
-            round_count_2++;
             if (!cpu_play) {
                 System.out.println("Jogador 2 escolha uma posição:");
                 register_move(scanner.nextInt(), 2);
-
             } else {
                 cpu();
 
@@ -246,9 +269,11 @@ public class Main {
                 switch (player) {
                     case 1:
                         game[move - 1] = "❌";
+                        round_count++;
                         break;
                     case 2:
                         game[move - 1] = "🅾";
+                        round_count_2++;
                         break;
                     default:
                         System.out.println("Jogador invalido");
@@ -293,6 +318,7 @@ public class Main {
 
     public static void clear_game() {// this function is responsible for the clearing of the game
         round_count = 0;
+        round_count_2 = 0;
         is_hard = false;
         for (int a = 0; a < game.length; a++) {
             game[a] = Integer.toString(a + 1);
