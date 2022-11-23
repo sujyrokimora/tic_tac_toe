@@ -19,6 +19,7 @@ import java.util.*;
 
 public class Main {
     public static int round_count = 0;
+    public static int round_count_2 = 0;
     public static boolean is_hard = false;
     public static boolean cpu_play = false;
     public static String[] game = new String[9];
@@ -76,7 +77,7 @@ public class Main {
     }
 
     public static void check_win(int player) {
-        if (round_count >= 4) {
+        if (round_count+round_count_2 >= 9) {
             announce_winner(3);
         }
         for (int a = 0; a < game.length; a += 3) {//horizontal check
@@ -213,28 +214,24 @@ public class Main {
     }
 
     public static void load_round() {
-        boolean played = false;
         draw();
         if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
-            played = true;
+            round_count++;
             draw();
         }
 
         if (hardmode(2)) {
+            round_count_2++;
             if (!cpu_play) {
                 System.out.println("Jogador 2 escolha uma posição:");
                 register_move(scanner.nextInt(), 2);
-                played = true;
+
             } else {
                 cpu();
+
             }
-        }
-        if (played) {
-            round_count++;
-            System.out.println(round_count);
-            System.out.println("ola");
         }
         load_round();
     }
