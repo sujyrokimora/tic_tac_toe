@@ -11,18 +11,18 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio, Xavier Cruz
- * @version 1.7
+ * @version V1
  * <p>
  * O programa deve ser escrito em inglês.
  */
 
 
 public class Main {
-    public static int round_count = 0;
-    public static int round_count_2 = 0;
-    public static boolean is_hard = false;
-    public static boolean cpu_play = false;
-    public static String[] game = new String[9];
+    public static int round_count = 0;//counts the number of moves made by player 1
+    public static int round_count_2 = 0;//counts the number of moves made by player 2|| cpu
+    public static boolean is_hard = false;// var that states if the player chooses the hard mode(extra 1)
+    public static boolean cpu_play = false;//var that states if the player chooses to play against the cpu
+    public static String[] game = new String[9];//var that stores the game table
     final static Scanner scanner = new Scanner(System.in); // defines the scanner so the program can read user inputs
 
     static {
@@ -33,14 +33,14 @@ public class Main {
         menu();
     }//starts the game
 
-    public static void menu() {
+    public static void menu() {//loads the menu
         clear_game();
         System.out.println("1 - NOVO JOGO");
         System.out.println("2 - HARD MODE");
         System.out.println("3 - Man vs Machine");
         System.out.println("0 - SAIR");
         int option = scanner.nextInt();
-        switch (option) {
+        switch (option) {//define the game mode
             case 0:
                 System.exit(1);
                 break;
@@ -62,25 +62,19 @@ public class Main {
         }
     }
 
-    public static boolean is_this_free(int move) {
+    public static boolean is_this_free(int move) {//checks if this spot is free to be played
         boolean answer = true;
-        if (game[move - 1] == "❌" || game[move - 1] == "🅾") {
+        if (game[move - 1] == "X" || game[move - 1] == "O") {
             answer = false;
         }
         return answer;
     }
 
-    public static void cpu() {
-        //sei que o cpu é sempre o segundo a playar por isso não importa ele saber se ja jogaram
-
-        cpu_read_game();
-
-    }
-
     public static void cpu_read_game() {//this function will study the game table and base from that will make a decision
         /* in order for the program to choose to "block"
      the other player will search for a combination 2/3 of a row
-     if he doesn't see anything to block the cpu will try to make a move on his advantage*/
+     if he doesn't see anything to block the cpu will try to make a move to his advantage if the cpu doesn't see anything that he can win
+     He will make a random move  */
         boolean optimal = false;
         for (int a = 0; a < game.length; a += 3) {//horizontal
             if ((game[a] == game[a + 1]) && (!optimal)) {
@@ -123,7 +117,14 @@ public class Main {
                 }
             }
         }
-
+        //checks the following positioning
+        /*
+        1-0-0
+        0-1-0
+        0-0-0
+        or anything similar to this positioning
+        1 is equivalent to the moves made by the same player in that order
+        */
         if ((game[0] == game[4]) && (!optimal)) {
             if (is_this_free(9)) {
                 optimal = true;
@@ -142,8 +143,16 @@ public class Main {
                 register_move(5, 2);
             }
         }
+        //END
 
-
+        //checks the following positioning
+        /*
+        0-0-1
+        0-1-0
+        0-0-0
+        or anything similar to this positioning
+        1 is equivalent to the moves made by the same player in that order
+        */
         if ((game[2] == game[4]) && (!optimal)) {
             if (is_this_free(7)) {
                 optimal = true;
@@ -162,7 +171,12 @@ public class Main {
                 register_move(5, 2);
             }
         }
+        //END
 
+        //if position five is available,
+        // we will make a move there
+        // in order to rise the chances of a draw
+        // if it's already occupied by the other player, He will make a random move
         if (is_this_free(5)) {
             register_move(5, 2);
         } else {
@@ -180,7 +194,7 @@ public class Main {
         }
     }
 
-    public static void check_win(int player) {
+    public static void check_win(int player) {// this function will check if anyone has won
 
         for (int a = 0; a < game.length; a += 3) {//horizontal check
 
@@ -196,9 +210,11 @@ public class Main {
                 }
             }
         }
-        if (round_count + round_count_2 >= 9) {
+        if (round_count + round_count_2 >= 9) {// checks if all positions are full in that case, declare a draw
             announce_winner(3);
         }
+
+
         //checks the following positioning
         /*
         1-0-0
@@ -222,12 +238,14 @@ public class Main {
     }
 
 
-    public static boolean hardmode(int player) {
+    public static boolean hardmode(int player) {// this function is responsible for the extra 1
+        //it asks the user for an input integer and if the user guesses,
+        // it lets him play else skips his turn
         boolean a = false;
         boolean control = true;
         if (is_hard) {
             Random rand = new Random();
-            int b = rand.nextInt(2);
+            int b = rand.nextInt(0, 2);
             while (control) {
                 System.out.println("Jogador " + player + ": Escolha 0 ou 1");
                 int user_guess = scanner.nextInt();
@@ -250,7 +268,7 @@ public class Main {
         return a;
     }
 
-    public static void load_round() {
+    public static void load_round() {//this function is the one responsible for the start of a round
         draw();
         System.out.println(round_count + round_count_2);
         if (hardmode(1)) {
@@ -264,28 +282,28 @@ public class Main {
                 System.out.println("Jogador 2 escolha uma posição:");
                 register_move(scanner.nextInt(), 2);
             } else {
-                cpu();
+                cpu_read_game();
 
             }
         }
         load_round();
     }
 
-    public static void register_move(int move, int player) {
+    public static void register_move(int move, int player) {// this function will register the moves
+        // made by a player || cpu
         if (move <= 9) {
-            System.out.println(move);
-            if ((game[move - 1] == "❌") || ((game[move - 1] == "🅾"))) {
+            if (is_this_free(move)) {
                 System.out.println("Esta posição ja se encontra ocupada");
                 System.out.println("Jogador " + player + " escolha uma posição:");
                 register_move(scanner.nextInt(), player);
             } else {
                 switch (player) {
                     case 1:
-                        game[move - 1] = "❌";
+                        game[move - 1] = "X";
                         round_count++;
                         break;
                     case 2:
-                        game[move - 1] = "🅾";
+                        game[move - 1] = "O";
                         round_count_2++;
                         break;
                     default:
@@ -301,7 +319,7 @@ public class Main {
             register_move(scanner.nextInt(), player);
         }
         if (cpu_play) {
-            System.out.println("o Cpu jogou no " + move);
+            System.out.println("||O Cpu escolheu jogar no " + move + "||");
         }
     }
 
@@ -316,7 +334,7 @@ public class Main {
         menu();
     }
 
-    public static void draw() {//function that draws the game table from the game[] array
+    public static void draw() {//function that draws the game table from the game[] array content
         int count = 0;
         for (int control = 0; control != 3; control++) {
             System.out.print("             |");
@@ -330,9 +348,12 @@ public class Main {
             }
             count += 3;
         }
+        System.out.println("\n");
+        System.out.println("\n");
     }
 
-    public static void clear_game() {// this function is responsible for the clearing of the game
+    public static void clear_game() {// this function is responsible for the clearing of the game,
+        //so it can be restarted properly
         round_count = 0;
         round_count_2 = 0;
         is_hard = false;
