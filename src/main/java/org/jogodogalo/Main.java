@@ -11,7 +11,7 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio 19930, Xavier Cruz 23762
- * @version V1
+ * @version V1.0.1
  * <p>
  * O programa deve ser escrito em inglês.
  */
@@ -270,7 +270,6 @@ public class Main {
 
     public static void load_round() {//this function is the one responsible for the start of a round
         draw();
-        System.out.println(round_count + round_count_2);
         if (hardmode(1)) {
             System.out.println("Jogador 1 escolha uma posição:");
             register_move(scanner.nextInt(), 1);
@@ -283,7 +282,6 @@ public class Main {
                 register_move(scanner.nextInt(), 2);
             } else {
                 cpu_read_game();
-
             }
         }
         load_round();
@@ -292,7 +290,7 @@ public class Main {
     public static void register_move(int move, int player) {// this function will register the moves
         // made by a player || cpu
         if (move <= 9) {
-            if (is_this_free(move)) {
+            if (!is_this_free(move)) {
                 System.out.println("Esta posição ja se encontra ocupada");
                 System.out.println("Jogador " + player + " escolha uma posição:");
                 register_move(scanner.nextInt(), player);
@@ -318,14 +316,14 @@ public class Main {
             System.out.println("Jogador " + player + " escolha uma posição:");
             register_move(scanner.nextInt(), player);
         }
-        if (cpu_play) {
+        if (cpu_play && player == 2) {
             System.out.println("||O Cpu escolheu jogar no " + move + "||");
         }
     }
 
     public static void announce_winner(int player) {// function responsible for the end of the game and announces the winner
         draw();
-        if (player != 3) {//when player is 3 this means that the game is a draw
+        if (player != 3) {//when player is 3, this means that the game is a draw
             System.out.println("O jogador " + player + " ganhou o jogo!!🎉🎉🎉🎉");
         } else {
             System.out.println("O jogo empatou.🤡💀");
@@ -357,6 +355,7 @@ public class Main {
         round_count = 0;
         round_count_2 = 0;
         is_hard = false;
+        cpu_play = false;
         for (int a = 0; a < game.length; a++) {
             game[a] = Integer.toString(a + 1);
         }

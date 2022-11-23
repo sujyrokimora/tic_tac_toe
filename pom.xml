@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>jogo_do_galo</artifactId>
-    <version>1.0-FINAL</version>
+    <version>1.0.1-FINAL</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
