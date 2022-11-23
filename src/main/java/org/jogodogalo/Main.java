@@ -10,7 +10,7 @@ import java.util.*;
  * -----------------------------------------------------
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
- * @author Rodrigo Inácio, Xavier Cruz
+ * @author Rodrigo Inácio 19930, Xavier Cruz 23762
  * @version V1
  * <p>
  * O programa deve ser escrito em inglês.
