@@ -125,30 +125,42 @@ public class Main {
         }
 
         if ((game[0] == game[4]) && (!optimal)) {
-            optimal = true;
-            register_move(9,2);
+            if (is_this_free(9)) {
+                optimal = true;
+                register_move(9, 2);
+            }
         }
         if ((game[4] == game[8]) && (!optimal)) {
-            optimal = true;
-            register_move(1,2);
+            if (is_this_free(1)) {
+                optimal = true;
+                register_move(1, 2);
+            }
         }
         if ((game[8] == game[0]) && (!optimal)) {
-            optimal = true;
-            register_move(5,2);
+            if (is_this_free(5)) {
+                optimal = true;
+                register_move(5, 2);
+            }
         }
 
 
         if ((game[2] == game[4]) && (!optimal)) {
-            optimal = true;
-            register_move(7,2);
+            if (is_this_free(7)) {
+                optimal = true;
+                register_move(7, 2);
+            }
         }
         if ((game[4] == game[6]) && (!optimal)) {
-            optimal = true;
-            register_move(3,2);
+            if (is_this_free(3)) {
+                optimal = true;
+                register_move(3, 2);
+            }
         }
         if ((game[6] == game[2]) && (!optimal)) {
-            optimal = true;
-            register_move(5,2);
+            if (is_this_free(5)) {
+                optimal = true;
+                register_move(5, 2);
+            }
         }
 
         if (is_this_free(5)) {
@@ -157,11 +169,10 @@ public class Main {
             int tenta = 0;
             while (!optimal && tenta < 9) {
                 tenta++;
+
                 Random rand = new Random();
-                int tr = rand.nextInt(1, 9);
-                System.out.println(tr);
+                int tr = rand.nextInt(1, 10);
                 if (is_this_free(tr)) {
-                    System.out.println(tr);
                     register_move(tr, 2);
                     optimal = true;
                 }
@@ -170,9 +181,7 @@ public class Main {
     }
 
     public static void check_win(int player) {
-        if (round_count + round_count_2 >= 9) {
-            announce_winner(3);
-        }
+
         for (int a = 0; a < game.length; a += 3) {//horizontal check
 
             if (((game[a] == game[a + 1]) && (game[a] == game[a + 2]))) {
@@ -186,6 +195,9 @@ public class Main {
                     announce_winner(player);
                 }
             }
+        }
+        if (round_count + round_count_2 >= 9) {
+            announce_winner(3);
         }
         //checks the following positioning
         /*
@@ -261,6 +273,7 @@ public class Main {
 
     public static void register_move(int move, int player) {
         if (move <= 9) {
+            System.out.println(move);
             if ((game[move - 1] == "❌") || ((game[move - 1] == "🅾"))) {
                 System.out.println("Esta posição ja se encontra ocupada");
                 System.out.println("Jogador " + player + " escolha uma posição:");
@@ -286,6 +299,9 @@ public class Main {
             System.out.println("Posição invalida");
             System.out.println("Jogador " + player + " escolha uma posição:");
             register_move(scanner.nextInt(), player);
+        }
+        if (cpu_play) {
+            System.out.println("o Cpu jogou no " + move);
         }
     }
 
