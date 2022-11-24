@@ -3,7 +3,7 @@ package org.jogodogalo;
 import java.util.*;
 
 /**
- * Este template foi criado na
+ * Este template foi criado na\
  * Escola Superior de Tecnologia e Gestão do
  * Instituto Politécnico de Beja
  * em 2021/09/20
@@ -11,7 +11,7 @@ import java.util.*;
  * Adicione aqui uma descrição da classe, o seu nome e a data
  *
  * @author Rodrigo Inácio 19930, Xavier Cruz 23762
- * @version V1.0.1
+ * @version V1.0.2
  * <p>
  * O programa deve ser escrito em inglês.
  */
@@ -177,7 +177,8 @@ public class Main {
         // we will make a move there
         // in order to rise the chances of a draw
         // if it's already occupied by the other player, He will make a random move
-        if (is_this_free(5)) {
+        if (is_this_free(5) && (!optimal)) {
+            optimal = true;
             register_move(5, 2);
         } else {
             int tenta = 0;
@@ -210,9 +211,6 @@ public class Main {
                 }
             }
         }
-        if (round_count + round_count_2 >= 9) {// checks if all positions are full in that case, declare a draw
-            announce_winner(3);
-        }
 
 
         //checks the following positioning
@@ -234,6 +232,9 @@ public class Main {
         */
         if ((game[2] == game[4]) && (game[2] == game[6])) {
             announce_winner(player);
+        }
+        if (round_count + round_count_2 >= 9) {// checks if all positions are full in that case, declare a draw
+            announce_winner(3);//ya és burro
         }
     }
 
